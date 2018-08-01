@@ -1,6 +1,6 @@
 # eternify
 
-A new Flutter project.
+ETERNIFY - SEJA ETERNO
 
 ## Getting Started
 

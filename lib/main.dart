@@ -6,14 +6,18 @@ import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
 
 String selectedUrl = '';
 
+const kAndroidUserAgent =
+    'Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/62.0.3202.94 Mobile Safari/537.36';
+
 void main() => runApp(MaterialApp(
-      routes: {        
+      routes: {
         '/widget': (_) => new WebviewScaffold(
               url: selectedUrl,
               appBar: new AppBar(
-                title: const Text('Widget webview'),
+                title: const Text('Eternify 1'),
               ),
-              withZoom: true,
+              withZoom: false,
+              userAgent: kAndroidUserAgent ,
               withLocalStorage: true,
             )
       },
@@ -29,11 +33,11 @@ class _MyAppState extends State<MyApp> {
   Future<String> _barcodeString;
 
   _buildWebView(data) {
-    setState(() {
-          selectedUrl = data;
-    });
-    if(data != null) {
-      Navigator.of(context).pushNamed('/widget');
+    if (data != null) {
+      // setState(() {
+      //     selectedUrl = data;
+      // });
+      //Navigator.of(context).pushNamed('/widget');
     }
     return new Text('Selecione um QRCODE');
   }
@@ -42,7 +46,7 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return new Scaffold(
       appBar: new AppBar(
-        title: const Text('Buscar Memórias'),
+        title: const Text('Eternify'),
       ),
       resizeToAvoidBottomPadding: false,
       body: new Center(
@@ -61,10 +65,17 @@ class _MyAppState extends State<MyApp> {
                 .setHandlePermissions(true)
                 .setExecuteAfterPermissionGranted(true)
                 .scan();
+            //print('_barcodeString ' + _barcodeString.toString());
+            _barcodeString.then((s) {
+              setState(() {
+                selectedUrl = s;
+              });
+              Navigator.of(context).pushNamed('/widget');
+            });
           });
         },
-        tooltip: 'Reader the QRCode',
-        child: new Icon(Icons.add_a_photo),
+        tooltip: 'Ler o QRCode',
+        child: new Icon(Icons.search),
       ),
     );
   }

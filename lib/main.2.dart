@@ -17,16 +17,15 @@ class Example extends StatefulWidget {
 class ExampleState extends State<Example> {
   int currentTab = 0;
   ProcurarPessoa procurarPessoa = new ProcurarPessoa();
-  NovaPessoa novaPessoa = new NovaPessoa(title: 'Nova Memória');
+  NovaPessoa novaPessoa = new NovaPessoa();
   TextFormFieldDemo textFormFieldDemo = new TextFormFieldDemo();
-  PageTwo pageTwo = new PageTwo();
   List<Widget> pages;
   Widget currentPage;
 
   @override
   void initState() {
     super.initState();
-    pages = [procurarPessoa, novaPessoa, textFormFieldDemo, pageTwo];
+    pages = [procurarPessoa, novaPessoa, textFormFieldDemo, textFormFieldDemo];
     currentPage = procurarPessoa;
   }
 
@@ -51,10 +50,6 @@ class ExampleState extends State<Example> {
             backgroundColor: COR_PADRAO_BARRA,
             icon: new Icon(Icons.location_searching),
             title: new Text("Buscar Memórias")),
-        new BottomNavigationBarItem(
-            backgroundColor: COR_PADRAO_BARRA,
-            icon: new Icon(Icons.add),
-            title: new Text("Nova Memória")),
         new BottomNavigationBarItem(
             backgroundColor: COR_PADRAO_BARRA,
             icon: new Icon(Icons.add),

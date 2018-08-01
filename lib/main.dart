@@ -1,86 +1,71 @@
-import 'package:eternify/procurar_pessoa.dart';
+import 'dart:async';
+
 import "package:flutter/material.dart";
+import 'package:qrcode_reader/QRCodeReader.dart';
+import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
 
-void main() {
-  runApp(new MaterialApp(
-    home: new Example(),
-  ));
-}
+String selectedUrl = '';
 
-class Example extends StatefulWidget {
-  @override
-  ExampleState createState() => new ExampleState();
-}
-
-class ExampleState extends State<Example> {
-  int currentTab = 0;
-  ProcurarPessoa procurarPessoa = new ProcurarPessoa(); 
-  PageTwo pageTwo = new PageTwo();
-  List<Widget> pages;
-  Widget currentPage;
-
-  @override
-  void initState() {
-    super.initState();
-    pages = [procurarPessoa, procurarPessoa, procurarPessoa, pageTwo];
-    currentPage = procurarPessoa;
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    const Color COR_PADRAO_BARRA = Colors.blue;
-    final BottomNavigationBar navBar = new BottomNavigationBar(
-      currentIndex: currentTab,
-      onTap: (int numTab) {
-        setState(() {
-          currentTab = numTab;
-          currentPage = pages[numTab];
-        });
+void main() => runApp(MaterialApp(
+      routes: {        
+        '/widget': (_) => new WebviewScaffold(
+              url: selectedUrl,
+              appBar: new AppBar(
+                title: const Text('Widget webview'),
+              ),
+              withZoom: true,
+              withLocalStorage: true,
+            )
       },
-      items: <BottomNavigationBarItem>[
-        new BottomNavigationBarItem(
-            backgroundColor: COR_PADRAO_BARRA,
-            icon: new Icon(Icons.location_searching),
-            title: new Text("Buscar Memórias")),
-        new BottomNavigationBarItem(
-            backgroundColor: COR_PADRAO_BARRA,
-            icon: new Icon(Icons.add),
-            title: new Text("Nova Memória")),
-        new BottomNavigationBarItem(
-            backgroundColor: COR_PADRAO_BARRA,
-            icon: new Icon(Icons.add),
-            title: new Text("Nova Memória")),
-        new BottomNavigationBarItem(
-            backgroundColor: COR_PADRAO_BARRA,
-            icon: new Icon(Icons.add),
-            title: new Text("Nova Memória")),
-      ],
-    );
+      home: MyApp(),
+    ));
 
+class MyApp extends StatefulWidget {
+  @override
+  _MyAppState createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  Future<String> _barcodeString;
+
+  _buildWebView(data) {
+    setState(() {
+          selectedUrl = data;
+    });
+    if(data != null) {
+      Navigator.of(context).pushNamed('/widget');
+    }
+    return new Text('Selecione um QRCODE');
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return new Scaffold(
-      bottomNavigationBar: navBar,
-      body: currentPage,
+      appBar: new AppBar(
+        title: const Text('Buscar Memórias'),
+      ),
+      resizeToAvoidBottomPadding: false,
+      body: new Center(
+          child: new FutureBuilder<String>(
+              future: _barcodeString,
+              builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
+                return _buildWebView(snapshot.data);
+              })),
+      floatingActionButton: new FloatingActionButton(
+        onPressed: () {
+          setState(() {
+            _barcodeString = new QRCodeReader()
+                .setAutoFocusIntervalInMs(200)
+                .setForceAutoFocus(true)
+                .setTorchEnabled(true)
+                .setHandlePermissions(true)
+                .setExecuteAfterPermissionGranted(true)
+                .scan();
+          });
+        },
+        tooltip: 'Reader the QRCode',
+        child: new Icon(Icons.add_a_photo),
+      ),
     );
-  }
-}
-
-class PageTwo extends StatelessWidget {
-  // Creating a simple example page.
-  @override
-  Widget build(BuildContext context) {
-    return new Center(child: new Text("Page two"));
-  }
-}
-
-class PageThree extends StatelessWidget {
-  // Creating a simple example page.
-  @override
-  Widget build(BuildContext context) {
-    return new Center(child: new Text("Page three"));
   }
 }

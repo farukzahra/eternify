@@ -14,7 +14,7 @@ void main() => runApp(MaterialApp(
         '/widget': (_) => new WebviewScaffold(
               url: selectedUrl,
               appBar: new AppBar(
-                title: const Text('Eternify 1'),
+                title: const Text('Eternify'),
               ),
               withZoom: false,
               userAgent: kAndroidUserAgent ,

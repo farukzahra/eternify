@@ -1,6 +1,4 @@
-import 'package:eternify/adicionar_pessoa.dart';
 import 'package:eternify/procurar_pessoa.dart';
-import 'package:eternify/text_form_field_demo.dart';
 import "package:flutter/material.dart";
 
 void main() {
@@ -16,9 +14,7 @@ class Example extends StatefulWidget {
 
 class ExampleState extends State<Example> {
   int currentTab = 0;
-  ProcurarPessoa procurarPessoa = new ProcurarPessoa();
-  NovaPessoa novaPessoa = new NovaPessoa(title: 'Nova Memória');
-  TextFormFieldDemo textFormFieldDemo = new TextFormFieldDemo();
+  ProcurarPessoa procurarPessoa = new ProcurarPessoa(); 
   PageTwo pageTwo = new PageTwo();
   List<Widget> pages;
   Widget currentPage;
@@ -26,7 +22,7 @@ class ExampleState extends State<Example> {
   @override
   void initState() {
     super.initState();
-    pages = [procurarPessoa, novaPessoa, textFormFieldDemo, pageTwo];
+    pages = [procurarPessoa, procurarPessoa, procurarPessoa, pageTwo];
     currentPage = procurarPessoa;
   }
 

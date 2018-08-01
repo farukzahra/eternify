@@ -18,6 +18,16 @@ class ProcurarPessoa extends StatefulWidget {
 class _ProcurarPessoa extends State<ProcurarPessoa> {
   Future<String> _barcodeString;
 
+  _buildWebView(data) {
+    return data != null
+        ? new WebviewScaffold(
+            url: data,
+            appBar: new AppBar(
+              title: new Text("Widget webview"),
+            ))
+        : new Text('');
+  }
+
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
@@ -29,15 +39,7 @@ class _ProcurarPessoa extends State<ProcurarPessoa> {
           child: new FutureBuilder<String>(
               future: _barcodeString,
               builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
-                //return new Text(snapshot.data != null ? 'URL :: ' + snapshot.data : '');
-                return snapshot.data != null
-                    ? new Scaffold(
-                        body: new WebviewScaffold(
-                            url: "snapshot.data",
-                            appBar: new AppBar(
-                              title: new Text("Widget webview"),
-                            )))
-                    : new Text('');
+                return _buildWebView(snapshot.data);
               })),
       floatingActionButton: new FloatingActionButton(
         onPressed: () {

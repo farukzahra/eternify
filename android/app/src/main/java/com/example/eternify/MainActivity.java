@@ -1,4 +1,4 @@
-package com.example.eternify;
+package br.com.eternify;
 
 import android.os.Bundle;
 import io.flutter.app.FlutterActivity;

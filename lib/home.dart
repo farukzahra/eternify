@@ -2,28 +2,22 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 
+import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
 import 'package:qrcode_reader/QRCodeReader.dart';
+const kAndroidUserAgent =
+    'Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/62.0.3202.94 Mobile Safari/537.36';
 
 class HomeScreen extends StatefulWidget {
-  String url;
-
-  HomeScreen({this.url});
-
   @override
   _HomeScreenState createState() => new _HomeScreenState();
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  String url;
-
   Future<String> _barcodeString;
-
-  _HomeScreenState({this.url});
 
   _buildWebView(data) {
     return new Text('Selecione um QRCODE');
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -50,10 +44,19 @@ class _HomeScreenState extends State<HomeScreen> {
                 .scan();
             //print('_barcodeString ' + _barcodeString.toString());
             _barcodeString.then((s) {
-              setState(() {
-                url = s;
-              });
-              Navigator.of(context).pushNamed('/widget');
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => new WebviewScaffold(
+                          url: s,
+                          appBar: new AppBar(
+                            title: const Text('Eternify'),
+                          ),
+                          withZoom: false,
+                          userAgent: kAndroidUserAgent,
+                          withLocalStorage: true,
+                        )),
+              );
             });
           });
         },

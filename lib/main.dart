@@ -13,7 +13,7 @@ void main() {
   runApp(new MaterialApp(
     home: new SplashScreen(),
     routes: <String, WidgetBuilder>{
-      '/HomeScreen': (BuildContext context) => new HomeScreen(),
+      '/HomeScreen': (BuildContext context) => new HomeScreen(url: selectedUrl,),
         '/widget': (_) => new WebviewScaffold(
               url: selectedUrl,
               appBar: new AppBar(

@@ -5,27 +5,22 @@ import 'package:flutter/material.dart';
 import 'package:qrcode_reader/QRCodeReader.dart';
 
 class HomeScreen extends StatefulWidget {
+  String url;
+
+  HomeScreen({this.url});
+
   @override
   _HomeScreenState createState() => new _HomeScreenState();
 }
 
-typedef QRcodeCallBack = void Function(String url);
-
-
 class _HomeScreenState extends State<HomeScreen> {
+  String url;
+
   Future<String> _barcodeString;
 
-  final QRcodeCallBack onQRcodeSelect;
-
-  _HomeScreenState({this.onQRcodeSelect});
+  _HomeScreenState({this.url});
 
   _buildWebView(data) {
-    if (data != null) {
-      // setState(() {
-      //     selectedUrl = data;
-      // });
-      //Navigator.of(context).pushNamed('/widget');
-    }
     return new Text('Selecione um QRCODE');
   }
 
@@ -56,7 +51,7 @@ class _HomeScreenState extends State<HomeScreen> {
             //print('_barcodeString ' + _barcodeString.toString());
             _barcodeString.then((s) {
               setState(() {
-                widget.selectedUrl = s;
+                url = s;
               });
               Navigator.of(context).pushNamed('/widget');
             });

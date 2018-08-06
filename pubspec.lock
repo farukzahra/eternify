@@ -164,7 +164,7 @@ packages:
       name: flutter_webview_plugin
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.2.0"
+    version: "0.2.1"
   front_end:
     dependency: transitive
     description:
@@ -242,13 +242,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.9"
-  json_serializable:
-    dependency: "direct main"
-    description:
-      name: json_serializable
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.0.0"
   kernel:
     dependency: transitive
     description:
@@ -403,13 +396,6 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.99"
-  source_gen:
-    dependency: "direct main"
-    description:
-      name: source_gen
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.9.0"
   source_map_stack_trace:
     dependency: transitive
     description:

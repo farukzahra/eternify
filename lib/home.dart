@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'dart:async';
 import 'dart:convert';
+import 'package:intl/intl.dart';
 
 import 'package:flutter/material.dart';
 
@@ -9,7 +10,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import './pessoa.dart';
 import './utils.dart';
-
 
 const CHAMADA_GET_PESSOA = "http://www.eternify.com.br/pessoa/get?id=";
 
@@ -31,11 +31,7 @@ class _HomeScreenState extends State<HomeScreen> {
         title: const Text('Eternify'),
       ),
       drawer: Drawer(
-        // Add a ListView to the drawer. This ensures the user can scroll
-        // through the options in the Drawer if there isn't enough vertical
-        // space to fit everything.
         child: ListView(
-          // Important: Remove any padding from the ListView.
           padding: EdgeInsets.zero,
           children: <Widget>[
             DrawerHeader(
@@ -113,10 +109,6 @@ class _HomeScreenState extends State<HomeScreen> {
               return new Text('Error: ${snapshot.error}');
             else
               return createListView(context, snapshot);
-          // return new Column(children: <Widget>[
-          //   new Text("Ultimas buscas"),
-          //   createListView(context, snapshot),
-          // ]);
         }
       },
     );
@@ -135,6 +127,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     NetworkImage(_convertToPessoa(values[index]).foto),
               ),
               title: new Text(_convertToPessoa(values[index]).nome),
+              subtitle: new Text(_convertToPessoa(values[index]).dataHora),
               trailing:
                   _buildSearchButton(context, _convertToPessoa(values[index])),
             ),
@@ -182,11 +175,16 @@ class _HomeScreenState extends State<HomeScreen> {
     http
         .get(CHAMADA_GET_PESSOA + url.toString().split("pessoa=")[1])
         .then((response) {
-      lista.add(response.body);
+      Map<String, dynamic> pessoa = json.decode(response.body);
+      if (pessoa != null) {
+        var now = new DateTime.now();
+        var formatter = new DateFormat('dd/MM/yyyy HH:mm');
+        pessoa['dataHora'] = formatter.format(now);
+        lista.add(json.encode(pessoa));
+        prefs.setStringList("lista", lista);
+        print("Lista >>> " + prefs.getStringList("lista").toString());
+      }
     });
-
-    prefs.setStringList("lista", lista);
-    print("Lista >>> " + prefs.getStringList("lista").toString());
   }
 
   _limparHistorico(BuildContext context) async {

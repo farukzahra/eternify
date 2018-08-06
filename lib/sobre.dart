@@ -39,7 +39,7 @@ class SobreScreen extends StatelessWidget {
         print("onTap called.");
         Navigator.push(context, routeWebView('http://www.eternify.com.br'));
       },
-      child: new Text('www.eternify.com.br'),
+      child: new Text('www.eternify.com.br',style: TextStyle(decoration: TextDecoration.underline)),
     );
   }
 }

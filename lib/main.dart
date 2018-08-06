@@ -4,8 +4,12 @@ import 'package:flutter/material.dart';
 
 import './home.dart';
 import './sobre.dart';
+  
+  
 
-void main() {
+
+void main() {  
+
   runApp(new MaterialApp(
     home: new SplashScreen(),
     routes: <String, WidgetBuilder>{

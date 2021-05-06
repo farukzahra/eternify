@@ -5,15 +5,15 @@ import 'package:intl/intl.dart';
 
 import 'package:flutter/material.dart';
 
-import 'package:qrcode_reader/QRCodeReader.dart';
+import 'package:qrcode_reader/qrcode_reader.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 import './pessoa.dart';
 import './utils.dart';
 
-const CHAMADA_GET_PESSOA = "http://www.eternify.com.br/pessoa/get?id=";
+const CHAMADA_GET_PESSOA = "http://eternify.com.br/pessoa/get?id=";
 
-const CHAMADA_FIND_PESSOA = "http://www.eternify.com.br/findpessoa.jsf?pessoa=";
+const CHAMADA_FIND_PESSOA = "http://eternify.com.br/findpessoa.jsf?pessoa=";
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -65,7 +65,7 @@ class _HomeScreenState extends State<HomeScreen> {
           ],
         ),
       ),
-      resizeToAvoidBottomPadding: false,
+      resizeToAvoidBottomInset: true,
       body: new Center(
           child: new FutureBuilder<String>(
               future: _barcodeString,
@@ -172,19 +172,20 @@ class _HomeScreenState extends State<HomeScreen> {
       lista = new List<String>();
     }
 
-    http
-        .get(CHAMADA_GET_PESSOA + url.toString().split("pessoa=")[1])
-        .then((response) {
-      Map<String, dynamic> pessoa = json.decode(response.body);
-      if (pessoa != null) {
-        var now = new DateTime.now();
-        var formatter = new DateFormat('dd/MM/yyyy HH:mm');
-        pessoa['dataHora'] = formatter.format(now);
-        lista.add(json.encode(pessoa));
-        prefs.setStringList("lista", lista);
-        print("Lista >>> " + prefs.getStringList("lista").toString());
-      }
-    });
+
+        
+
+    var response = await http.get(Uri.parse(CHAMADA_GET_PESSOA + url.toString().split("pessoa=")[1]));
+
+    Map<String, dynamic> pessoa = json.decode(response.body);
+    if (pessoa != null) {
+      var now = new DateTime.now();
+      var formatter = new DateFormat('dd/MM/yyyy HH:mm');
+      pessoa['dataHora'] = formatter.format(now);
+      lista.add(json.encode(pessoa));
+      prefs.setStringList("lista", lista);
+      print("Lista >>> " + prefs.getStringList("lista").toString());
+    }
   }
 
   _limparHistorico(BuildContext context) async {
